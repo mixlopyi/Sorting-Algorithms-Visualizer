@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixlopyi - Sorting Algorithms Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="SortingAlgorithmsVisualizer.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%234361ee'/><stop offset='100%' stop-color='%233f37c9'/></linearGradient></defs><rect width='100' height='100' rx='15' fill='url(%23grad)'/><path d='M30,40 L50,20 L70,40 M30,60 L50,80 L70,60' stroke='white' stroke-width='8' stroke-linecap='round' fill='none'/></svg>">
+    <div class="main-header">
+    <div class="logo-container">
+        <div class="logo-icon">
+            <i class="fas fa-sort-amount-up"></i>
+        </div>
+        <div class="logo-text">Mixlopyi</div>
+    </div>
+    
+    <div class="tagline-container">
+        <p class="main-tagline">Interactive Algorithm Visualization Through Animation</p>
+    </div>
+    </div>
+        
+        <div class="toggle-container">
+            <label class="toggle-label" for="dark-mode-toggle">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-text"><i class="fas fa-moon"></i> Dark Mode</span>
+            </label>
+            
+            <span class="toggle-separator" aria-hidden="true">|</span>
+            
+            <label class="toggle-label" for="language-toggle">
+                <input type="checkbox" id="language-toggle">
+                <span class="toggle-slider"></span>
+                <span class="toggle-text"><i class="fas fa-language"></i> العربية</span>
+            </label>
+        </div>
+        
+        <div class="control-panel">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="algorithm"><i class="fas fa-cogs"></i> Sorting Algorithm</label>
+                    <select id="algorithm">
+                        <!-- Basic Comparison Sorts -->
+                        <optgroup label="Basic Comparison Sorts">
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="gnome">Gnome Sort</option>
+                            <option value="cocktail">Cocktail Shaker Sort</option>
+                        </optgroup>
+                        
+                        <!-- Advanced Comparison Sorts -->
+                        <optgroup label="Advanced Comparison Sorts">
+                            <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="heap">Heap Sort</option>
+                            <option value="shell">Shell Sort</option>
+                            <option value="comb">Comb Sort</option>
+                            <option value="bogo">Bogo Sort (Educational)</option>
+                        </optgroup>
+                        
+                        <!-- Non-Comparison Sorts -->
+                        <optgroup label="Non-Comparison Sorts">
+                            <option value="counting">Counting Sort</option>
+                            <option value="radix">Radix Sort</option>
+                            <option value="bucket">Bucket Sort</option>
+                            <option value="pigeonhole">Pigeonhole Sort</option>
+                        </optgroup>
+                        
+                        <!-- Specialized Sorts -->
+                        <optgroup label="Specialized Sorts">
+                            <option value="cycle">Cycle Sort</option>
+                            <option value="odd-even">Odd-Even Sort</option>
+                            <option value="tim">Tim Sort</option>
+                        </optgroup>
+                    </select>
+                    <div id="category-explanation" class="category-explanation">
+                        <h4>Basic Comparison Sorts</h4>
+                        <p>Compare elements directly using simple operations. Easy to understand but often less efficient for large datasets.</p>
+                    </div>
+                    <div id="algorithm-explanation" class="algorithm-explanation">
+                        Select an algorithm to see its explanation
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="array-size"><i class="fas fa-list-ol"></i> Array Size</label>
+                    <input type="number" id="array-size" min="3" max="50" value="15">
+                </div>
+                <div class="control-group">
+                    <label for="array-type"><i class="fas fa-random"></i> Array Type</label>
+                    <select id="array-type">
+                        <option value="random">Random</option>
+                        <option value="sorted">Sorted</option>
+                        <option value="reverse">Reverse Sorted</option>
+                        <option value="almost">Almost Sorted</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div class="control-group speed-control">
+                    <label for="speed"><i class="fas fa-tachometer-alt"></i> Animation Speed</label>
+                    <input type="range" id="speed" min="1" max="20" value="10">
+                    <span class="speed-value" id="speed-value">10</span>
+                </div>
+            </div>
+            
+            <div class="control-row" id="custom-array-row" style="display: none;">
+                <div class="control-group" style="flex-grow: 1;">
+                    <label for="array-input"><i class="fas fa-keyboard"></i> Custom Array (comma separated numbers, 0-100)</label>
+                    <input type="text" id="array-input" placeholder="e.g. 5, 3, 8, 1, 2">
+                </div>
+            </div>
+            
+            <div class="control-row">
+                <button id="generate-btn"><i class="fas fa-dice"></i> Generate New Array</button>
+                <button id="start-btn"><i class="fas fa-play"></i> Start Sorting</button>
+                <button id="pause-btn" style="display: none;"><i class="fas fa-pause"></i> Pause</button>
+                <button id="reset-btn" disabled><i class="fas fa-stop"></i> Reset</button>
+            </div>
+        </div>
+        
+        <div class="array-display-container">
+            <div class="array-display">
+                <strong><i class="fas fa-history"></i> Original Array:</strong> 
+                <span id="original-array"></span>
+            </div>
+            <div class="array-display">
+                <strong><i class="fas fa-sync-alt"></i> Current Array:</strong> 
+                <span id="current-array"></span>
+            </div>
+            <div class="array-display">
+                <strong><i class="fas fa-check-circle"></i> Sorted Array:</strong> 
+                <span id="sorted-array"></span>
+            </div>
+        </div>
+        <div id="sorting-status"></div>
+        
+        <div id="visualization"></div>
+        
+        <div class="info-panel">
+            <div class="algorithm-info">
+                <h3><i class="fas fa-code"></i> Pseudocode</h3>
+                <div class="pseudo-code-container">
+                    <div id="pseudo-code" class="pseudo-code">
+                        Select an algorithm to see its pseudocode
+                    </div>
+                    <button id="copy-pseudocode-btn" class="copy-btn" title="Copy pseudocode">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="time-complexity">
+                    <div class="complexity-case">
+                        <h4>Best Case</h4>
+                        <div class="notation-pair">
+                            <div><span class="notation-label">Student:</span> <span id="best-case">O(?)</span></div>
+                            <div><span class="notation-label">Academic:</span> <span id="best-case-academic">Ω(?)</span></div>
+                        </div>
+                    </div>
+                    <div class="complexity-case">
+                        <h4>Average Case</h4>
+                        <div class="notation-pair">
+                            <div><span class="notation-label">Student:</span> <span id="average-case">O(?)</span></div>
+                            <div><span class="notation-label">Academic:</span> <span id="average-case-academic">Θ(?)</span></div>
+                        </div>
+                    </div>
+                    <div class="complexity-case">
+                        <h4>Worst Case</h4>
+                        <div class="notation-pair">
+                            <div><span class="notation-label">Student:</span> <span id="worst-case">O(?)</span></div>
+                            <div><span class="notation-label">Academic:</span> <span id="worst-case-academic">O(?)</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="complexity-case">
+                    <h4>Space Complexity</h4>
+                    <div class="notation-pair">
+                        <div><span class="notation-label">Overall:</span> <span id="space-complexity">O(?)</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="time-calculation">
+                <h3>Time Calculation</h3>
+                <div class="execution-time">
+                    Execution Time: <span id="actual-time">Not run yet</span>
+                </div>
+                <div id="time-equation" class="time-equation">
+                    The time complexity equation will appear here after sorting completes.
+                </div>
+            </div>
+        </div>
+        
+        <div class="complexity-legend">
+            <h3>Visualization Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #4361ee;"></span>
+                    <span>Normal Element</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #f72585;"></span>
+                    <span>Comparing</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #4cc9f0;"></span>
+                    <span>Sorted</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #f8961e;"></span>
+                    <span>Pivot (Quick Sort)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #3f37c9;"></span>
+                    <span>Minimum (Selection Sort)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="algorithm-categories">
+            <h3>Algorithm Categories Explained</h3>
+            <div class="category-grid">
+                <div class="category-card" data-category="basic">
+                    <div class="category-icon">B</div>
+                    <h4>Basic Comparison</h4>
+                    <p>Simple algorithms that compare elements directly. Good for learning fundamentals.</p>
+                    <div class="category-count">5 algorithms</div>
+                </div>
+                <div class="category-card" data-category="advanced">
+                    <div class="category-icon">A</div>
+                    <h4>Advanced Comparison</h4>
+                    <p>Efficient algorithms using divide & conquer or heap structures.</p>
+                    <div class="category-count">6 algorithms</div>
+                </div>
+                <div class="category-card" data-category="non-comparison">
+                    <div class="category-icon">N</div>
+                    <h4>Non-Comparison</h4>
+                    <p>Sort by counting or distributing elements. Linear time for specific data.</p>
+                    <div class="category-count">4 algorithms</div>
+                </div>
+                <div class="category-card" data-category="specialized">
+                    <div class="category-icon">S</div>
+                    <h4>Specialized</h4>
+                    <p>Optimized for specific data patterns or hybrid approaches.</p>
+                    <div class="category-count">3 algorithms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-indicator" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <span>Processing...</span>
+    </div>
+
+    <div id="error-message" class="error-message" style="display: none;"></div>
+
+    <script src="SortingAlgorithmsVisualizer.js"></script>
+</body>
+</html>
